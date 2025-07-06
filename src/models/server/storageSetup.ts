@@ -1,7 +1,7 @@
 import {Permission} from "node-appwrite"
 
 import {questionAttachmentBucket} from "@/models/name";
-import { storage } from "../server/config";
+import { storage } from "./config";
 
 
 const getOrCreateStorage = async () =>{

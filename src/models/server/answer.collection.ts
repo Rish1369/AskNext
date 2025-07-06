@@ -18,7 +18,6 @@ const createAnswerCollection = async () =>{
     //creating attributes and indexes
 
     await Promise.all([
-
         databases.createStringAttribute(db, answerCollection, "content", 10024, true),
         databases.createStringAttribute(db, answerCollection, "questionId", 256, true),
         databases.createStringAttribute(db, answerCollection, "authorId", 50, true),

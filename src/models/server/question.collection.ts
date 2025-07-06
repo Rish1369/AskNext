@@ -25,30 +25,6 @@ const createQuestionCollection = async () =>{
         databases.createStringAttribute(db, questionCollection, "attachmentId", 256, false),
     ]);
     console.log("Question collection attributes created successfully");
-
-    // create indexes
-await Promise.all([
-  // Index for title field (for sorting or filtering)
-  databases.createIndex(
-    db,
-    questionCollection,
-    "index_title",
-    IndexType.Fulltext,
-    ["title"],
-    ["asc"]
-  ),
-
-  // Index for content field (for sorting in ascending order)
-  databases.createIndex(
-    db,
-    questionCollection,
-    "index_content",
-    IndexType.Fulltext,
-    ["content"],
-    ["asc"]
-  )
-]);
-
 }  
 
 export default createQuestionCollection;
