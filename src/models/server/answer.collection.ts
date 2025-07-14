@@ -1,28 +1,23 @@
-import {IndexType, Permission} from "node-appwrite"
+import { IndexType, Permission } from "node-appwrite";
+import { answerCollection, db } from "../name";
+import { databases } from "./config";
 
-import {db , answerCollection} from "@/models/name";
-import {databases} from "@/models/server/config";
-
-
-const createAnswerCollection = async () =>{
-    // create collection
-    await databases.createCollection(db,answerCollection, answerCollection, [
+export default async function createAnswerCollection() {
+    // Creating Collection
+    await databases.createCollection(db, answerCollection, answerCollection, [
+        Permission.create("users"),
         Permission.read("any"),
         Permission.read("users"),
-        Permission.write("users"),
         Permission.update("users"),
         Permission.delete("users"),
     ]);
-    console.log("Question collection created successfully");
+    console.log("Answer Collection Created");
 
-    //creating attributes and indexes
-
+    // Creating Attributes
     await Promise.all([
-        databases.createStringAttribute(db, answerCollection, "content", 10024, true),
-        databases.createStringAttribute(db, answerCollection, "questionId", 256, true),
+        databases.createStringAttribute(db, answerCollection, "content", 10000, true),
+        databases.createStringAttribute(db, answerCollection, "questionId", 50, true),
         databases.createStringAttribute(db, answerCollection, "authorId", 50, true),
     ]);
-    console.log("Question collection attributes created successfully");
+    console.log("Answer Attributes Created");
 }
-
-export default createAnswerCollection;

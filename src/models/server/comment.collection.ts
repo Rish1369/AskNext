@@ -1,30 +1,24 @@
-import {IndexType, Permission} from "node-appwrite"
+import { Permission } from "node-appwrite";
+import { commentCollection, db } from "../name";
+import { databases } from "./config";
 
-import {db , commentCollection} from "@/models/name";
-import {databases} from "@/models/server/config";
-
-
-const createCommentCollection = async () =>{
-    // create collection
-    await databases.createCollection(db,commentCollection, commentCollection, [
+export default async function createCommentCollection() {
+    // Creating Collection
+    await databases.createCollection(db, commentCollection, commentCollection, [
+        Permission.create("users"),
         Permission.read("any"),
         Permission.read("users"),
-        Permission.write("users"),
         Permission.update("users"),
         Permission.delete("users"),
     ]);
-    console.log("Question collection created successfully");
+    console.log("Comment Collection Created");
 
-    //creating attributes and indexes
-
+    // Creating Attributes
     await Promise.all([
-
-        databases.createStringAttribute(db, commentCollection, "content", 10024, true),
-        databases.createEnumAttribute(db, commentCollection, "type", ["answer" , "question"], true),
+        databases.createStringAttribute(db, commentCollection, "content", 10000, true),
+        databases.createEnumAttribute(db, commentCollection, "type", ["answer", "question"], true),
         databases.createStringAttribute(db, commentCollection, "typeId", 50, true),
-        databases.createStringAttribute(db, commentCollection, "authorId", 50, true)
+        databases.createStringAttribute(db, commentCollection, "authorId", 50, true),
     ]);
-    console.log("Question collection attributes created successfully");
+    console.log("Comment Attributes Created");
 }
-
-export default createCommentCollection;

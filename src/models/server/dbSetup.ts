@@ -1,34 +1,33 @@
-import {db} from "@/models/name";
+import { db } from "../name";
 import createAnswerCollection from "./answer.collection";
 import createCommentCollection from "./comment.collection";
 import createQuestionCollection from "./question.collection";
 import createVoteCollection from "./vote.collection";
-import {databases} from "@/models/server/config";
+
+import { databases } from "./config";
 
 export default async function getOrCreateDB(){
-    try{
-        await databases.get(db);
-        console.log("Database already connected");
+  try {
+    await databases.get(db)
+    console.log("Database connection")
+  } catch (error) {
+    try {
+      await databases.create(db, db)
+      console.log("database created")
+      //create collections
+      await Promise.all([
+        createQuestionCollection(),
+        createAnswerCollection(),
+        createCommentCollection(),
+        createVoteCollection(),
+
+      ])
+      console.log("Collection created")
+      console.log("Database connected")
+    } catch (error) {
+      console.log("Error creating databases or collection", error)
     }
-    catch(error){
-        try{
-            await databases.create(db, db);
-            console.log("Database created successfully");
-            //creating collection in the database
-            await Promise.all(
-                [
-                    createQuestionCollection(),
-                    createAnswerCollection(),
-                    createCommentCollection(),
-                    createVoteCollection()
-                ]
-            );
-            console.log("Collections created successfully");
-        }
-        catch(error){
-            console.error("Error creating database or collections:", error);
-            throw new Error("Failed to create database or collections");
-        }
-    }
-    return databases;
+  }
+
+  return databases
 }

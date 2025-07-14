@@ -1,34 +1,33 @@
-import {Permission} from "node-appwrite"
-
-import {questionAttachmentBucket} from "@/models/name";
+import { Permission } from "node-appwrite";
+import { questionAttachmentBucket } from "../name";
 import { storage } from "./config";
 
-
-const getOrCreateStorage = async () =>{
-
+export default async function getOrCreateStorage() {
     try {
         await storage.getBucket(questionAttachmentBucket);
-        console.log("storage connected");
+        console.log("Storage Connected");
     } catch (error) {
-        try{
-            await storage.createBucket(questionAttachmentBucket, questionAttachmentBucket,[
-                Permission.read("any"),
-                Permission.read("users"),
-                Permission.write("users"),
-                Permission.update("users"),
-                Permission.delete("users"),
-            ],
-            false,
-            undefined,
-            undefined,
-            ["jpeg", "png", "gif", "webp", "mp4", "mov", "avi", "mkv" , "heic"]
-        );
-        console.log("Storage created successfully");
-        console.log("Storage connected");
-        }catch (e) {
-            console.error("Error creating storage:", e);
-            throw new Error("Failed to create storage");
-        } 
+        try {
+            await storage.createBucket(
+                questionAttachmentBucket,
+                questionAttachmentBucket,
+                [
+                    Permission.create("users"),
+                    Permission.read("any"),
+                    Permission.read("users"),
+                    Permission.update("users"),
+                    Permission.delete("users"),
+                ],
+                false,
+                undefined,
+                undefined,
+                ["jpg", "png", "gif", "jpeg", "webp", "heic"]
+            );
+
+            console.log("Storage Created");
+            console.log("Storage Connected");
+        } catch (error) {
+            console.error("Error creating storage:", error);
+        }
     }
 }
-export default getOrCreateStorage;
