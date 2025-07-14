@@ -1,6 +1,6 @@
 import confetti from "canvas-confetti";
 
-interface ConfettiOptions extends confetti.Options {
+interface ConfettiOptions {
     particleCount?: number;
     angle?: number;
     spread?: number;
@@ -12,7 +12,7 @@ interface ConfettiOptions extends confetti.Options {
     ticks?: number;
     origin?: { x: number; y: number };
     colors?: string[];
-    shapes?: confetti.Shape[];
+    shapes?: any[];
     zIndex?: number;
     disableForReducedMotion?: boolean;
     useWorker?: boolean;
